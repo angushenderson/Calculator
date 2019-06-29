@@ -18,7 +18,7 @@ def decimal():
         commandline.append([])
     commandline[-1].append('.')
     print(commandline[-1])
-    output.config(text=commandline)
+    drawoutput()
 
     # next time change things to accomodate float. change things to add
     # as strings then change to either int or float depenfing on if has
@@ -67,10 +67,11 @@ def addnum(num):
     
         commandline[-1].append(str(num))
         print(commandline)
-        output.config(text=commandline)
+        drawoutput()
 
 def operation(op):
     global commandline, decimal
+    print("opopopopopopopop: ",op)
     print("operations: ",commandline)
     continuee = True
     if len(commandline) < 1:
@@ -82,7 +83,7 @@ def operation(op):
             if commandline[-1] != '/' or commandline[-1] != '*' or commandline[-1] != '+' or commandline[-1] != '-' or commandline[-1] != '=':
                 combinenums()
                 commandline.append(op)
-                output.config(text=commandline)
+                drawoutput()
 
 def calculate():
     global commandline, highest
@@ -148,8 +149,29 @@ def calculate():
             com += 1
 
     highest = 0     
-    output.config(text=commandline)
-    
+    drawoutput()
+
+def drawoutput():      # fix this hambles of what you think you can call code
+    global commandline
+    out = ''
+    tempnum = ''
+    print(commandline)
+    for c in range(len(commandline)):
+        if type(commandline[c]) == str or type(commandline[c]) == float:
+            print("cccccccc: ",c)
+            out = out + str(c)
+        print("type: ",type(commandline[c]))
+        if type(commandline[c]) == list:
+            print("list type: ",commandline[c])
+            for cc in commandline[c]:
+                print("1: ",type(cc))
+                print("2: ",cc)
+                #if type(commandline[c1]) == str:
+                tempnum = tempnum + str(cc)
+            out = out + tempnum
+    print("output: ",out)
+    output.config(text=out)
+ 
 
 button0 = Button(window, text='0', bg='black',fg='white',command=lambda:addnum(0))
 button1 = Button(window, text='1', bg='black',fg='white',command=lambda:addnum(1))
