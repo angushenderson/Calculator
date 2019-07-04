@@ -1,3 +1,5 @@
+# calculator in python tkinter
+# Angus Henderson
 from tkinter import *
 import math
 
@@ -20,15 +22,13 @@ def decimal():
     print(commandline[-1])
     drawoutput()
 
-    # next time change things to accomodate float. change things to add
-    # as strings then change to either int or float depenfing on if has
-    # decimal place or not
-
 def combinenums():
     global commandline, highest
     tempnum = ''
     tf = False
     temphighest = 0
+    if type(commandline[-1]) == float:
+        commandline[-1] = str(commandline[-1])
     for c in commandline[-1]:
         tempnum = tempnum + str(c)
         if tf:
@@ -37,53 +37,60 @@ def combinenums():
             tf = True
     if temphighest > highest:
         highest = temphighest
-    commandline[-1] = float(tempnum)
-    print("new floating numner: ",commandline[-1])
+    if type(commandline[-1]) != str:
+        print("asafsdgasfasf",commandline[-1])
+        commandline[-1] = float(tempnum)
 
 def addnum(num):
     global commandline
-    
     run = False
-
     # only add if previous is a symbol or no previous i,e start fo list.
-
     # if empty. mudt be numbver first
     if len(commandline) == 0:
         run = True
 
     if len(commandline) > 0:
-        print("lengh working")
-        if [('1' or '2' or '3' or '4' or '5' or '6' or '7' or '8' or '9' or '0' or '.' or '/' or '*' or '+' or '-' or '=') in commandline[-1]]:
+        if type(commandline[-1]) == list or type(commandline[-1]) == str:
             run = True
-            print("number add true")
-        
+        #if type(commandline[-1]) == float:    # this line not necessary however good to overwrite everygthon
+        #    run = False
+
     if run:
-        print("runnniiiiinnnnnggggggggg")
         if len(commandline) < 1:
             commandline.append([])
         if type(commandline[-1]) == str:
-            print("second string detected")
             commandline.append([])
-    
+
         commandline[-1].append(str(num))
         print(commandline)
         drawoutput()
 
 def operation(op):
     global commandline, decimal
-    print("opopopopopopopop: ",op)
-    print("operations: ",commandline)
-    continuee = True
-    if len(commandline) < 1:
-        print("to short to continue")
-        continuee = False
-    if continuee:
+    if len(commandline) > 0:
         print("continuing")
         if len(commandline) > 0:
-            if commandline[-1] != '/' or commandline[-1] != '*' or commandline[-1] != '+' or commandline[-1] != '-' or commandline[-1] != '=':
+            if type(commandline[-1]) != str:
                 combinenums()
                 commandline.append(op)
                 drawoutput()
+
+def delete():
+    global commandline, highest
+    print(commandline)
+    if type(commandline[-1]) == list:
+        print('list pop')
+        if len(commandline[-1]) > 0:
+            commandline[-1].pop()
+    elif type(commandline[-1]) == float:
+        print('float pop')
+        str(commandline[-1]).pop()
+    else:
+        print('else pop')
+        commandline.pop()
+    if len(commandline) == 0:
+        highest = 0
+    drawoutput()
 
 def calculate():
     global commandline, highest
@@ -111,7 +118,7 @@ def calculate():
                 commandline.pop(com+1)
                 commandline.pop(com)
                 commandline.pop(com-1)
-                commandline.insert(com-1,str(operation))   # index,element
+                commandline.insert(com-1,operation)   # index,element
                 com = 0
 
             if commandline[com] == '*':
@@ -120,7 +127,7 @@ def calculate():
                 commandline.pop(com + 1)
                 commandline.pop(com)
                 commandline.pop(com - 1)
-                commandline.insert(com-1,str(operation))
+                commandline.insert(com-1,operation)
                 com = 0
 
             com += 1
@@ -133,7 +140,7 @@ def calculate():
                 commandline.pop(com + 1)
                 commandline.pop(com)
                 commandline.pop(com - 1)
-                commandline.insert(com-1,str(operation))
+                commandline.insert(com-1,operation)
                 com = 0
                 
             if commandline[com] == '-':
@@ -143,33 +150,41 @@ def calculate():
                 commandline.pop(com + 1)
                 commandline.pop(com)
                 commandline.pop(com - 1)
-                commandline.insert(com-1,str(operation))
+                commandline.insert(com-1,operation)
                 com = 0
 
             com += 1
 
-    highest = 0     
+    #highest = 0       # only reset highest when clear calculator
     drawoutput()
 
-def drawoutput():      # fix this hambles of what you think you can call code
-    global commandline
-    out = ''
+def drawoutput():      # fix this shambles of what you think you can call code
+    global commandline  # its operators that are giving me hassle printing 01
+    out = ''            # also figure out hoe to remove decimal and one if no numbers after point
     tempnum = ''
     print(commandline)
     for c in range(len(commandline)):
-        if type(commandline[c]) == str or type(commandline[c]) == float:
-            print("cccccccc: ",c)
-            out = out + str(c)
-        print("type: ",type(commandline[c]))
+        add = True
+        if type(commandline[c]) == float:   # for full complete numbers
+            print("float")
+            afterdec = str(commandline[c] - int(commandline[c]))[1:]
+            length = len(str(commandline[c]))
+
+            if afterdec == '.0':
+                beforedec = (len(str(commandline[c])) - 2)
+                out = out + str(commandline[c])[:beforedec]
+
+            else:
+                out = out + str(float(commandline[c]))
+        
+        if type(commandline[c]) == str:
+            out = out + str(commandline[c])
+            
         if type(commandline[c]) == list:
-            print("list type: ",commandline[c])
             for cc in commandline[c]:
-                print("1: ",type(cc))
-                print("2: ",cc)
-                #if type(commandline[c1]) == str:
                 tempnum = tempnum + str(cc)
             out = out + tempnum
-    print("output: ",out)
+    print(commandline)
     output.config(text=out)
  
 
@@ -185,7 +200,7 @@ button8 = Button(window, text='8', bg='black',fg='white',command=lambda:addnum(8
 button9 = Button(window, text='9', bg='black',fg='white',command=lambda:addnum(9))
 
 buttondecimal = Button(window, text='.', bg='black', fg='white',command=lambda:decimal())
-buttondel = Button(window, text='del', bg='black', fg='white')
+buttondel = Button(window, text='del', bg='black', fg='white',command=lambda:delete())
 
 buttonequal = Button(window, text='=', bg='red', fg='white',command=lambda:calculate())
 buttonplus = Button(window, text='+', bg='black', fg='white',command=lambda:operation('+'))
