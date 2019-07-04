@@ -38,7 +38,6 @@ def combinenums():
     if temphighest > highest:
         highest = temphighest
     if type(commandline[-1]) != str:
-        print("asafsdgasfasf",commandline[-1])
         commandline[-1] = float(tempnum)
 
 def addnum(num):
@@ -62,13 +61,11 @@ def addnum(num):
             commandline.append([])
 
         commandline[-1].append(str(num))
-        print(commandline)
         drawoutput()
 
 def operation(op):
     global commandline, decimal
     if len(commandline) > 0:
-        print("continuing")
         if len(commandline) > 0:
             if type(commandline[-1]) != str:
                 combinenums()
@@ -77,16 +74,12 @@ def operation(op):
 
 def delete():
     global commandline, highest
-    print(commandline)
     if type(commandline[-1]) == list:
-        print('list pop')
         if len(commandline[-1]) > 0:
             commandline[-1].pop()
     elif type(commandline[-1]) == float:
-        print('float pop')
         str(commandline[-1]).pop()
     else:
-        print('else pop')
         commandline.pop()
     if len(commandline) == 0:
         highest = 0
@@ -155,18 +148,15 @@ def calculate():
 
             com += 1
 
-    #highest = 0       # only reset highest when clear calculator
     drawoutput()
 
 def drawoutput():      # fix this shambles of what you think you can call code
     global commandline  # its operators that are giving me hassle printing 01
     out = ''            # also figure out hoe to remove decimal and one if no numbers after point
     tempnum = ''
-    print(commandline)
     for c in range(len(commandline)):
         add = True
         if type(commandline[c]) == float:   # for full complete numbers
-            print("float")
             afterdec = str(commandline[c] - int(commandline[c]))[1:]
             length = len(str(commandline[c]))
 
