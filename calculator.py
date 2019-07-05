@@ -1,5 +1,6 @@
 # calculator in python tkinter
 # Angus Henderson
+# todo add brackests so trig snctions are sooable
 from tkinter import *
 import math
 
@@ -22,6 +23,12 @@ def decimal():
     print(commandline[-1])
     drawoutput()
 
+def clear():
+    global commandline, highest
+    commandline = []
+    highest = 0
+    drawoutput()
+
 def combinenums():
     global commandline, highest
     tempnum = ''
@@ -33,7 +40,7 @@ def combinenums():
         tempnum = tempnum + str(c)
         if tf:
             temphighest += 1
-        if c == '.':       # loops in this order for a reason dont move or have to add in extra line
+        if c == '.':
             tf = True
     if temphighest > highest:
         highest = temphighest
@@ -51,8 +58,6 @@ def addnum(num):
     if len(commandline) > 0:
         if type(commandline[-1]) == list or type(commandline[-1]) == str:
             run = True
-        #if type(commandline[-1]) == float:    # this line not necessary however good to overwrite everygthon
-        #    run = False
 
     if run:
         if len(commandline) < 1:
@@ -191,6 +196,7 @@ button9 = Button(window, text='9', bg='black',fg='white',command=lambda:addnum(9
 
 buttondecimal = Button(window, text='.', bg='black', fg='white',command=lambda:decimal())
 buttondel = Button(window, text='del', bg='black', fg='white',command=lambda:delete())
+buttonclear = Button(window, text='clr', bg='black', fg='white',command=lambda:clear())
 
 buttonequal = Button(window, text='=', bg='red', fg='white',command=lambda:calculate())
 buttonplus = Button(window, text='+', bg='black', fg='white',command=lambda:operation('+'))
@@ -220,6 +226,7 @@ buttondivide.place(x=400,y=200,width=100,height=100)
 buttonmultiply.place(x=400,y=300,width=100,height=100)
 buttondecimal.place(x=0,y=500,width=100,height=100)
 buttondel.place(x=200,y=500,width=100,height=100)
+buttonclear.place(x=400,y=500,width=100,height=100)
 
 window.mainloop()
 
