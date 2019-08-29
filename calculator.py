@@ -5,7 +5,7 @@ from tkinter import *
 import math
 
 window = Tk()
-window.geometry('500x600')
+window.geometry('600x600')
 window.title('Calculator')
 window.configure(background='black')
 global commandline, highest
@@ -66,6 +66,20 @@ def addnum(num):
             commandline.append([])
 
         commandline[-1].append(str(num))
+        drawoutput()
+
+def addtrig(function):
+    global commandline
+    run = False
+    if len(commandline) == 0:
+        run = True
+
+    if len(commandline) > 0:
+        if type(commandline[-1]) == str:
+            run = True
+
+    if run:
+        commandline.append(str(function))
         drawoutput()
 
 def operation(op):
@@ -196,7 +210,7 @@ button9 = Button(window, text='9', bg='black',fg='white',command=lambda:addnum(9
 
 buttondecimal = Button(window, text='.', bg='black', fg='white',command=lambda:decimal())
 buttondel = Button(window, text='del', bg='black', fg='white',command=lambda:delete())
-buttonclear = Button(window, text='clr', bg='black', fg='white',command=lambda:clear())
+buttonclear = Button(window, text='clear', bg='black', fg='white',command=lambda:clear())
 
 buttonequal = Button(window, text='=', bg='red', fg='white',command=lambda:calculate())
 buttonplus = Button(window, text='+', bg='black', fg='white',command=lambda:operation('+'))
@@ -204,9 +218,13 @@ buttonminus = Button(window, text='-', bg='black', fg='white',command=lambda:ope
 buttonmultiply = Button(window, text='*', bg='black', fg='white',command=lambda:operation('*'))
 buttondivide = Button(window, text='/', bg='black', fg='white',command=lambda:operation('/'))
 
+buttonsin = Button(window, text='sin', bg='black', fg='white', command=lambda:addtrig('sin'))
+buttoncos = Button(window, text='cos', bg='black', fg='white', command=lambda:addtrig('cos'))
+buttontan = Button(window, text='tan', bg='black', fg='white', command=lambda:addtrig('tan'))
+
 
 output = Label(window, text='Output', bg='white',fg='black')
-output.place(x=0, y=0, width=500, height=200)
+output.place(x=0, y=0, width=600, height=200)
 
 button0.place(x=100,y=500,height=100,width=100)
 button1.place(x=0,y=400,height=100,width=100)
@@ -226,7 +244,9 @@ buttondivide.place(x=400,y=200,width=100,height=100)
 buttonmultiply.place(x=400,y=300,width=100,height=100)
 buttondecimal.place(x=0,y=500,width=100,height=100)
 buttondel.place(x=200,y=500,width=100,height=100)
-buttonclear.place(x=400,y=500,width=100,height=100)
-
+buttonclear.place(x=400,y=500, width=100,height=100)
+buttonsin.place(x=500, y = 200, width=100, height=100)
+buttoncos.place(x=500, y=300, width=100, height=100)
+buttontan.place(x=500, y=400, width=100, height=100)
 window.mainloop()
 
